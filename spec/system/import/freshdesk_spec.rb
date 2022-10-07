@@ -9,24 +9,24 @@ RSpec.describe 'Import Freshdesk', type: :system, set_up: false, authenticated_a
       find('.js-freshdesk').click
     end
 
-    let(:subdomain_field) { find('#freshdesk-subdomain') }
-    let(:token_field)     { find('#freshdesk-api-token') }
+    let(:subdomain_field) { find_by_id('freshdesk-subdomain') }
+    let(:token_field)     { find_by_id('freshdesk-api-token') }
 
     it 'invalid hostname' do
       subdomain_field.fill_in with: 'reallybadexample'
 
-      expect(page).to have_css('.freshdesk-subdomain-error', text: 'Hostname not found!')
+      expect(page).to have_css('.freshdesk-subdomain-error', text: 'The hostname could not be found.')
     end
 
     it 'valid hostname' do
       subdomain_field.fill_in with: 'reallybadexample'
 
       # wait for error to appear to validate it's hidden successfully
-      find('.freshdesk-subdomain-error', text: 'Hostname not found!')
+      find('.freshdesk-subdomain-error', text: 'The hostname could not be found.')
 
       subdomain_field.fill_in with: ENV['IMPORT_FRESHDESK_ENDPOINT_SUBDOMAIN']
 
-      expect(page).to have_no_css('.freshdesk-subdomain-error', text: 'Hostname not found!')
+      expect(page).to have_no_css('.freshdesk-subdomain-error', text: 'The hostname could not be found.')
     end
 
     it 'invalid credentials' do
@@ -60,8 +60,8 @@ RSpec.describe 'Import Freshdesk', type: :system, set_up: false, authenticated_a
   end
 
   describe 'import progress', :use_vcr do
-    let(:subdomain_field) { find('#freshdesk-subdomain') }
-    let(:token_field) { find('#freshdesk-api-token') }
+    let(:subdomain_field) { find_by_id('freshdesk-subdomain') }
+    let(:token_field) { find_by_id('freshdesk-api-token') }
     let(:job)         { ImportJob.find_by(name: 'Import::Freshdesk') }
 
     before do

@@ -1,4 +1,3 @@
-$task-state-pending-color: hsl(206, 7%, 28%);
 $high-priority-color: hsl(360, 71%, 60%);
 $low-priority-color: hsl(200, 68%, 73%);
 $minWidth: 1024px;
@@ -28,13 +27,11 @@ $mobileNavigationWidthOpen: 220px;
   --menu-icon: hsl(206, 5%, 42%);
   --nav-icon: hsl(0, 0%, 50%);
   --highlight: hsl(205, 90%, 60%);
-  --highlight-muted: hsl(198, 19%, 72%);
   --interactive-primary: black;
   --interactive-muted: hsl(210, 3%, 71%);
   --interactive-muted-active: hsl(210, 4%, 71%);
   --interactive-muted-alt: hsl(197, 19%, 78%);
   --interactive-muted-alt-selected: hsl(206, 7%, 37%);
-  --input-disabled: hsl(210, 3%, 93%);
   --background-primary: hsl(210, 17%, 98%);
   --background-primary-alt: hsl(197, 16%, 94%);
   --background-secondary: white;
@@ -71,6 +68,7 @@ $mobileNavigationWidthOpen: 220px;
   --superbad-color: hsl(19, 90%, 51%);
   --ghost-color: hsl(0, 0%, 74%);
   --danger-color: hsl(0, 65%, 55%);
+  --pending-color: hsl(206, 7%, 28%);
   --elevation-stroke: 0 1px hsl(210, 7%, 94%);
   --elevation-low: 0 1px 5px hsla(205, 30%, 30%, 0.1);
   --elevation-high: 0 1px 14px hsla(208, 95%, 3%, 0.25);
@@ -103,13 +101,11 @@ $mobileNavigationWidthOpen: 220px;
   --text-nav: hsl(205, 1%, 84%);
   --nav-icon: hsl(0, 0%, 50%);
   --highlight: hsl(205, 90%, 60%);
-  --highlight-muted: hsl(210, 8%, 22%);
   --interactive-primary: white;
   --interactive-muted: hsl(213, 3%, 64%);
   --interactive-muted-active: hsl(213, 3%, 35%);
   --interactive-muted-alt: hsl(209, 5%, 35%);
   --interactive-muted-alt-selected: hsl(205, 4%, 75%);
-  --input-disabled: hsl(230, 4%, 20%);
   --background-primary: hsl(230, 5%, 19%);
   --background-primary-alt: hsl(230, 5%, 21%);
   --background-secondary: hsl(230, 5%, 23%);
@@ -146,6 +142,7 @@ $mobileNavigationWidthOpen: 220px;
   --superbad-color: hsl(19, 90%, 51%);
   --ghost-color: hsl(0, 0%, 50%);
   --danger-color: hsl(0, 82%, 59%);
+  --pending-color: hsl(205, 1%, 44%);
   --elevation-stroke: 0 1px hsla(0, 0%, 0%, 0.13);
   --elevation-low: 0 1px 5px hsla(0, 0%, 0%, 0.15);
   --elevation-high: 0 1px 14px hsla(0, 0%, 0%, 0.25);
@@ -2326,7 +2323,7 @@ textarea,
   &.is-disabled, // .is-disabled should not be used - legacy support
   &[disabled],
   &[readonly] {
-    background: var(--input-disabled);
+    opacity: 0.38;
 
     &:focus,
     &.focus {
@@ -2337,7 +2334,6 @@ textarea,
   &.is-disabled, // .is-disabled should not be used
   &[disabled] {
     cursor: not-allowed;
-    opacity: 1;
   }
 }
 
@@ -2405,8 +2401,7 @@ input.time.time--12 {
 
 .richtext.form-control [contenteditable='false'] {
   cursor: not-allowed;
-  opacity: 1;
-  background: var(--input-disabled);
+  opacity: 0.38;
   border-color: var(--border);
   padding: unset;
 
@@ -4796,15 +4791,15 @@ footer {
 
 // pending: stays blue
 // .nav-tab.task-state-pending.is-active {
-//   background-color: $task-state-pending-color;
+//   background-color: var(--pending-color);
 // }
 
 .task-state-pending-color {
-  color: $task-state-pending-color;
+  color: var(--text-muted);
 }
 
 .icon-task-state.pending {
-  fill: $task-state-pending-color;
+  fill: var(--pending-color);
 }
 
 .state-badge {
@@ -6356,6 +6351,7 @@ a.list-group-item.active > .badge,
 }
 
 .activity-message {
+  color: inherit;
   flex: 1;
   min-width: 0; /* Firefox wrong content-calculation with word-wrap workaround */
 
@@ -6490,7 +6486,7 @@ a.list-group-item.active > .badge,
   top: 50%;
   margin-top: -3px;
   border-radius: 100%;
-  background: var(--highlight-muted);
+  background: var(--interactive-muted-alt);
 }
 
 .form-inline .form-group .btn {
@@ -7808,7 +7804,7 @@ a.list-group-item.active > .badge,
   top: 50%;
   margin-top: -3px;
   border-radius: 100%;
-  background: var(--highlight-muted);
+  background: var(--interactive-muted-alt);
   box-shadow: 0 0 0 2px var(--background-primary);
 }
 
@@ -8095,7 +8091,7 @@ li.list-item-none {
 
 .ticket-id {
   color: var(--text-inverted);
-  background: var(--highlight-muted);
+  background: var(--interactive-muted-alt);
   font-size: 11px;
   border-radius: 7px;
   padding: 0 5px;
@@ -10644,7 +10640,7 @@ output {
 
   &[disabled] + label {
     cursor: not-allowed;
-    background: var(--input-disabled);
+    opacity: 0.38;
     border-color: var(--border);
   }
 
@@ -12350,18 +12346,17 @@ output {
     margin-top: 6px;
     margin-bottom: 6px;
     border: 0;
+    border-top: 1px solid var(--background-modifier-border);
   }
 
-  // add contrast to
-  [style*='background'] {
-    color: black;
-  }
+  @include dark {
+    // remove custom backgrounds and colors
+    [style*='background'] {
+      background: none !important;
+    }
 
-  [style*='color'] {
-    background: white;
-
-    @include dark {
-      background: hsl(0, 0%, 64%);
+    [style*='color'] {
+      color: inherit !important;
     }
   }
 }

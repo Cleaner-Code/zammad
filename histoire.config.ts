@@ -11,6 +11,7 @@ export default defineConfig({
     server: {
       port: 3074,
     },
+    logLevel: process.env.HISTOIRE_BUILD ? 'error' : 'info',
   },
   tree: {
     groups: [

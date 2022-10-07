@@ -12,25 +12,25 @@ RSpec.describe 'Import Zendesk', type: :system, set_up: false, authenticated_as:
       find('.js-zendesk').click
     end
 
-    let(:url_field)   { find('#zendesk-url') }
-    let(:email_field) { find('#zendesk-email') }
-    let(:token_field) { find('#zendesk-api-token') }
+    let(:url_field)   { find_by_id('zendesk-url') }
+    let(:email_field) { find_by_id('zendesk-email') }
+    let(:token_field) { find_by_id('zendesk-api-token') }
 
     it 'invalid hostname' do
       url_field.fill_in with: 'https://reallybadexample.zendesk.com/'
 
-      expect(page).to have_css('.zendesk-url-error', text: 'Hostname not found!')
+      expect(page).to have_css('.zendesk-url-error', text: 'The hostname could not be found.')
     end
 
     it 'valid hostname' do
       url_field.fill_in with: 'https://reallybadexample.zendesk.com/'
 
       # wait for error to appear to validate it's hidden successfully
-      find('.zendesk-url-error', text: 'Hostname not found!')
+      find('.zendesk-url-error', text: 'The hostname could not be found.')
 
       url_field.fill_in with: import_zendesk_url
 
-      expect(page).to have_no_css('.zendesk-url-error', text: 'Hostname not found!')
+      expect(page).to have_no_css('.zendesk-url-error', text: 'The hostname could not be found.')
     end
 
     it 'invalid credentials' do
@@ -67,9 +67,9 @@ RSpec.describe 'Import Zendesk', type: :system, set_up: false, authenticated_as:
   end
 
   describe 'import progress', :use_vcr do
-    let(:url_field)   { find('#zendesk-url') }
-    let(:email_field) { find('#zendesk-email') }
-    let(:token_field) { find('#zendesk-api-token') }
+    let(:url_field)   { find_by_id('zendesk-url') }
+    let(:email_field) { find_by_id('zendesk-email') }
+    let(:token_field) { find_by_id('zendesk-api-token') }
     let(:job)         { ImportJob.find_by(name: 'Import::Zendesk') }
 
     before do
